@@ -3,17 +3,57 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
+  Text,
   TextInput,
+  View,
 } from "react-native";
 
-import { Text, View } from "@/components/Themed";
 import { Feather } from "@expo/vector-icons";
 import { useState } from "react";
 
+type ItemForm = {
+  name: string;
+  type: string | null;
+  sn: string;
+  ram: string;
+  rom: string;
+  touchscreen: boolean;
+  qty: number;
+  price: string;
+};
+
 export default function NewSaleScreen() {
-  const types = ["laptop", "Phone", "Accessory"];
   const [selectedType, setSelectedType] = useState<string | null>(null);
-  const [isTouchscreen, setIsTouchscreen] = useState(false);
+
+  const types = ["laptop", "phone", "accessory"];
+  const initialItemForm: ItemForm = {
+    name: "",
+    type: null,
+    sn: "",
+    ram: "",
+    rom: "",
+    touchscreen: false,
+    qty: 1,
+    price: "",
+  };
+
+  const [customerName, setCustomerName] = useState("");
+  const [itemForm, setItemForm] = useState<ItemForm>(initialItemForm);
+
+  const minQty = 1;
+  const maxQty = 9999;
+
+  const qtyIncrement = () => {
+    if (itemForm.qty < maxQty) {
+      setItemForm((prev) => ({ ...prev, qty: itemForm.qty + 1 }));
+    }
+  };
+
+  const qtyDecrement = () => {
+    if (itemForm.qty > minQty) {
+      setItemForm((prev) => ({ ...prev, qty: itemForm.qty - 1 }));
+    }
+  };
 
   return (
     <ScrollView
@@ -26,7 +66,12 @@ export default function NewSaleScreen() {
         <Text style={styles.sectionLabel}>CUSTOMER</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Name</Text>
-          <TextInput style={styles.input} placeholder="e.g Agboola Tomiwa" />
+          <TextInput
+            style={styles.input}
+            value={customerName}
+            onChangeText={(text) => setCustomerName(text)}
+            placeholder="e.g Agboola Tomiwa"
+          />
         </View>
       </View>
 
@@ -34,7 +79,14 @@ export default function NewSaleScreen() {
         <Text style={styles.sectionLabel}>ITEM DETAILS</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Name</Text>
-          <TextInput style={styles.input} placeholder="Enter name" />
+          <TextInput
+            style={styles.input}
+            value={itemForm.name}
+            onChangeText={(text) =>
+              setItemForm((prev) => ({ ...prev, name: text }))
+            }
+            placeholder="Enter name"
+          />
         </View>
 
         <View style={styles.typeContainer}>
@@ -45,65 +97,120 @@ export default function NewSaleScreen() {
               return (
                 <Pressable
                   key={index}
-                  onPress={() => setSelectedType(type)}
+                  onPress={() => {
+                    setSelectedType(type);
+                    setItemForm((prev) => ({ ...prev, type: type }));
+                  }}
                   style={[
                     styles.typeButton,
                     isSelected && styles.selectedTypeButton,
                   ]}
                 >
-                  <Text style={styles.typeButtonText}>{type}</Text>
+                  <Text style={styles.typeButtonText}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}
+                  </Text>
                 </Pressable>
               );
             })}
           </View>
         </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>S/N</Text>
-          <TextInput style={styles.input} placeholder="Serial number" />
-        </View>
+        {(selectedType === "laptop" || selectedType === "phone") && (
+          <>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>S/N</Text>
+              <TextInput
+                style={styles.input}
+                value={itemForm.sn}
+                onChangeText={(text) =>
+                  setItemForm((prev) => ({ ...prev, sn: text }))
+                }
+                placeholder="Serial number"
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>RAM</Text>
-          <TextInput style={styles.input} placeholder="e.g 8GB DDR4" />
-        </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>RAM</Text>
+              <TextInput
+                style={styles.input}
+                value={itemForm.ram}
+                onChangeText={(text) =>
+                  setItemForm((prev) => ({ ...prev, ram: text }))
+                }
+                placeholder="e.g 8GB DDR4"
+              />
+            </View>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>ROM</Text>
-          <TextInput style={styles.input} placeholder="e.g 512GB SSD" />
-        </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>ROM</Text>
+              <TextInput
+                style={styles.input}
+                value={itemForm.rom}
+                onChangeText={(text) =>
+                  setItemForm((prev) => ({ ...prev, rom: text }))
+                }
+                placeholder="e.g 512GB SSD"
+              />
+            </View>
+          </>
+        )}
 
-        <View style={styles.touchscreenContainer}>
-          <Text style={styles.touchscreenLabel}>Touchscreen</Text>
-          <Switch
-            value={isTouchscreen}
-            onValueChange={() => setIsTouchscreen(!isTouchscreen)}
-            trackColor={{ true: "#494946", false: "#ccc" }}
-            thumbColor={isTouchscreen ? "#494946" : "#fff"}
-            style={styles.touchscreenSwitch}
-          />
-        </View>
+        {selectedType === "laptop" && (
+          <View style={styles.touchscreenContainer}>
+            <Text style={styles.touchscreenLabel}>Touchscreen</Text>
+            <Switch
+              value={itemForm.touchscreen}
+              onValueChange={(newValue) => {
+                setItemForm((prev) => ({
+                  ...prev,
+                  touchscreen: newValue,
+                }));
+              }}
+              trackColor={{ true: "#494946", false: "#ccc" }}
+              thumbColor={itemForm.touchscreen ? "#494946" : "#fff"}
+              style={styles.touchscreenSwitch}
+            />
+          </View>
+        )}
 
         <View style={styles.numberInputContainer}>
           <View style={styles.qtyContainer}>
             <Text style={styles.qtyLabel}>Qty</Text>
             <View style={styles.qtyInputContainer}>
-              <Pressable style={styles.qtyInputButton}>
+              <Pressable style={styles.qtyInputButton} onPress={qtyDecrement}>
                 <Feather name="minus" size={12} color="black" />
               </Pressable>
-              <TextInput style={styles.qtyInput} />
-              <Pressable style={styles.qtyInputButton}>
+              <TextInput
+                style={styles.qtyInput}
+                value={itemForm.qty.toString()}
+                onChangeText={(text) => {
+                  const parsed = parseInt(text);
+                  setItemForm((prev) => ({
+                    ...prev,
+                    qty: isNaN(parsed) ? 1 : parsed,
+                  }));
+                }}
+                keyboardType="numeric"
+              />
+              <Pressable style={styles.qtyInputButton} onPress={qtyIncrement}>
                 <Feather name="plus" size={12} color="black" />
               </Pressable>
             </View>
           </View>
 
           <View style={styles.priceContainer}>
-            <View style={styles.priceLabel}>
+            <View style={styles.priceLabelContainer}>
               <Text style={styles.priceLabel}>Price</Text>
               <Text style={styles.priceLabel}>({"\u20A6"})</Text>
             </View>
-            <TextInput style={styles.priceInput} placeholder="0.00" />
+            <TextInput
+              style={styles.priceInput}
+              value={itemForm.price}
+              onChangeText={(number) =>
+                setItemForm((prev) => ({ ...prev, price: number }))
+              }
+              placeholder="0.00"
+            />
           </View>
         </View>
       </View>
@@ -156,7 +263,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#faf9f5",
   },
   container: {
-    overflowY: "auto",
     alignItems: "center",
     justifyContent: "center",
     padding: 14,
@@ -311,13 +417,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     gap: 8,
   },
+  priceLabelContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 4,
+  },
   priceLabel: {
     fontSize: 16,
     fontWeight: "medium",
     color: "#494946",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "center",
     lineHeight: 16,
   },
   priceInput: {
