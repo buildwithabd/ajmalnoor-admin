@@ -20,7 +20,9 @@ export default function CartReviewScreen() {
   }>();
 
   const cartString = Array.isArray(cartRaw) ? cartRaw[0] : cartRaw;
+
   const [cart, setCart] = useState<CartItem[]>(() => JSON.parse(cartString));
+  const [PaymentMethod, setPaymentMethod] = useState<PaymentMethod>("transfer");
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
@@ -127,10 +129,20 @@ export default function CartReviewScreen() {
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>PAYMENT METHOD</Text>
         <View style={styles.paymentOptions}>
-          <Pressable style={styles.paymentOption}>
+          <Pressable
+            style={[
+              styles.paymentOption,
+              PaymentMethod === "transfer" && styles.paymentOptionSelected,
+            ]}
+          >
             <Text style={styles.paymentText}>Transfer</Text>
           </Pressable>
-          <Pressable style={styles.paymentOption}>
+          <Pressable
+            style={[
+              styles.paymentOption,
+              PaymentMethod === "transfer" && styles.paymentOptionSelected,
+            ]}
+          >
             <Text style={styles.paymentText}>Cash</Text>
           </Pressable>
         </View>
@@ -308,6 +320,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 10,
+  },
+
+  paymentOptionSelected: {
+    backgroundColor: "#f0f0f0",
+    borderColor: "#494946",
+    borderWidth: 1,
   },
 
   paymentText: {
