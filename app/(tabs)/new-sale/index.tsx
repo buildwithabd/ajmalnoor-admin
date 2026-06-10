@@ -78,8 +78,6 @@ export default function NewSaleScreen() {
       return;
     }
 
-    setErrors(initialErrors);
-
     const newItem: CartItem = {
       id: Date.now().toString(),
       name: itemForm.name.trim(),
@@ -99,7 +97,6 @@ export default function NewSaleScreen() {
     };
 
     setCart((prev) => [...prev, newItem]);
-
     setItemForm(initialItemForm);
     setErrors(initialErrors);
   };
