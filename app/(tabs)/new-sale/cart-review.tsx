@@ -1,6 +1,7 @@
 import { CartItem } from "@/types";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
+import { useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -10,13 +11,18 @@ import {
   View,
 } from "react-native";
 
+type PaymentMethod = "transfer" | "cash";
+
 export default function CartReviewScreen() {
-  const { cart: cartString, customerName } = useLocalSearchParams<{
+  const { cart: cartRaw, customerName } = useLocalSearchParams<{
     cart: string;
     customerName: string;
   }>();
 
-  const cart: CartItem[] = JSON.parse(cartString);
+  const cartString = Array.isArray(cartRaw) ? cartRaw[0] : cartRaw;
+  const [cart, setCart] = useState<CartItem[]>(() => JSON.parse(cartString));
+
+  const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   return (
     <ScrollView
@@ -33,7 +39,7 @@ export default function CartReviewScreen() {
               <Text style={styles.fontBlack}>{item.name}</Text>
               <Text style={styles.fontBlack}>
                 {"\u20A6"}
-                {item.price * item.qty}
+                {(item.price * item.qty).toLocaleString()}
               </Text>
             </View>
             {item.specs && (
@@ -83,7 +89,7 @@ export default function CartReviewScreen() {
                 <View style={styles.priceInfo}>
                   <Text>
                     @{"\u20A6"}
-                    {item.price}
+                    {item.price.toLocaleString()}
                   </Text>
                   <Text>each</Text>
                 </View>
@@ -100,6 +106,41 @@ export default function CartReviewScreen() {
           </View>
         ))}
       </View>
+
+      <View style={styles.sectionContainer}>
+        <View style={styles.row}>
+          <Text style={styles.subtotal}>Subtotal</Text>
+          <Text style={styles.fontBlack}>
+            {"\u20A6"}
+            {subtotal.toLocaleString()}
+          </Text>
+        </View>
+        <View style={[styles.row, styles.total]}>
+          <Text style={styles.fontBlack}>Total</Text>
+          <Text style={styles.totalAmount}>
+            {"\u20A6"}
+            {subtotal.toLocaleString()}
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>PAYMENT METHOD</Text>
+        <View style={styles.paymentOptions}>
+          <Pressable style={styles.paymentOption}>
+            <Text style={styles.paymentText}>Transfer</Text>
+          </Pressable>
+          <Pressable style={styles.paymentOption}>
+            <Text style={styles.paymentText}>Cash</Text>
+          </Pressable>
+        </View>
+      </View>
+
+      <Pressable style={styles.previewBtn}>
+        <Feather name="arrow-up-right" size={16} color="black" />
+        <Text style={styles.previewBtnText}>Preview receipt</Text>
+        <Feather name="arrow-up-right" size={16} color="black" />
+      </Pressable>
     </ScrollView>
   );
 }
@@ -221,5 +262,76 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ccc",
+  },
+
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 14,
+    height: 45,
+  },
+
+  total: {
+    borderTopColor: "#ccc",
+    borderTopWidth: 0.5,
+  },
+
+  rowText: {
+    fontSize: 16,
+    color: "black",
+    fontWeight: 500,
+  },
+
+  subtotal: {
+    fontSize: 16,
+  },
+
+  totalAmount: {
+    color: "green",
+    fontWeight: 500,
+  },
+
+  paymentOptions: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+  },
+
+  paymentOption: {
+    flex: 1,
+    height: 40,
+    borderWidth: 0.5,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 10,
+  },
+
+  paymentText: {
+    textAlign: "center",
+    fontSize: 18,
+    color: "black",
+    fontWeight: 400,
+  },
+
+  previewBtn: {
+    flexDirection: "row",
+    width: "100%",
+    paddingVertical: 10,
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: "#494946",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  previewBtnText: {
+    fontSize: 16,
+    fontWeight: "medium",
+    color: "black",
   },
 });
