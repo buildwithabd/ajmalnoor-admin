@@ -1,7 +1,7 @@
-import { CartItem } from "@/types";
+import { useCart } from "@/context/CartContext";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useNavigation } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   Pressable,
   ScrollView,
@@ -14,30 +14,24 @@ import {
 type PaymentMethod = "transfer" | "cash";
 
 export default function CartReviewScreen() {
-  const { cart: cartRaw, customerName } = useLocalSearchParams<{
-    cart: string;
-    customerName: string;
-  }>();
+  const { customerName, cart, removeItem, updateQty } = useCart();
 
-  const cartString = Array.isArray(cartRaw) ? cartRaw[0] : cartRaw;
+  const navigation = useNavigation();
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("transfer");
 
-  const [cart, setCart] = useState<CartItem[]>(() => JSON.parse(cartString));
-  const [PaymentMethod, setPaymentMethod] = useState<PaymentMethod>("transfer");
-
-  const handleQtyChange = (id: string, delta: number) => {
-    setCart((prev) =>
-      prev.map((item) => {
-        if (item.id !== id) return item;
-        const newQty = item.qty + delta;
-        if (newQty < 1 || newQty > 9999) return item;
-        return { ...item, qty: newQty };
-      }),
-    );
-  };
-
-  const handleDelete = (id: string) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerTitle: () => (
+        <View>
+          <Text style={{ fontSize: 15, fontWeight: "500" }}>Cart review</Text>
+          <Text style={{ fontSize: 12, color: "grey" }}>
+            Customer: {customerName}
+          </Text>
+        </View>
+      ),
+    });
+  }, [customerName]);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
@@ -94,7 +88,7 @@ export default function CartReviewScreen() {
               <View style={styles.qtyInputContainer}>
                 <Pressable
                   style={styles.qtyInputButton}
-                  onPress={() => handleQtyChange(item.id, -1)}
+                  onPress={() => updateQty(item.id, -1)}
                 >
                   <Feather name="minus" size={12} color="black" />
                 </Pressable>
@@ -105,7 +99,7 @@ export default function CartReviewScreen() {
                 />
                 <Pressable
                   style={styles.qtyInputButton}
-                  onPress={() => handleQtyChange(item.id, +1)}
+                  onPress={() => updateQty(item.id, +1)}
                 >
                   <Feather name="plus" size={12} color="black" />
                 </Pressable>
@@ -120,7 +114,7 @@ export default function CartReviewScreen() {
 
               <Pressable
                 style={styles.deleteBtn}
-                onPress={() => handleDelete(item.id)}
+                onPress={() => removeItem(item.id)}
               >
                 <MaterialIcons
                   name="delete-outline"
@@ -156,7 +150,7 @@ export default function CartReviewScreen() {
           <Pressable
             style={[
               styles.paymentOption,
-              PaymentMethod === "transfer" && styles.paymentOptionSelected,
+              paymentMethod === "transfer" && styles.paymentOptionSelected,
             ]}
             onPress={() => setPaymentMethod("transfer")}
           >
@@ -165,7 +159,7 @@ export default function CartReviewScreen() {
           <Pressable
             style={[
               styles.paymentOption,
-              PaymentMethod === "cash" && styles.paymentOptionSelected,
+              paymentMethod === "cash" && styles.paymentOptionSelected,
             ]}
             onPress={() => setPaymentMethod("cash")}
           >
@@ -328,6 +322,7 @@ const styles = StyleSheet.create({
   totalAmount: {
     color: "green",
     fontWeight: 500,
+    fontSize: 16,
   },
 
   paymentOptions: {
