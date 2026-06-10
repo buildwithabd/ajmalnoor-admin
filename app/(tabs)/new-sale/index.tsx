@@ -35,7 +35,7 @@ const initialErrors: FormErrors = {
 };
 
 export default function NewSaleScreen() {
-  const { customerName, setCustomerName, cart, addItem, clearCart } = useCart();
+  const { customerName, setCustomerName, cart, addItem } = useCart();
   const [itemForm, setItemForm] = useState<ItemForm>(initialItemForm);
   const [errors, setErrors] = useState<FormErrors>(initialErrors);
 
