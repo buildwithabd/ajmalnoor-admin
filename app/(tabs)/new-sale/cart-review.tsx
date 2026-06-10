@@ -24,6 +24,21 @@ export default function CartReviewScreen() {
   const [cart, setCart] = useState<CartItem[]>(() => JSON.parse(cartString));
   const [PaymentMethod, setPaymentMethod] = useState<PaymentMethod>("transfer");
 
+  const handleQtyChange = (id: string, delta: number) => {
+    setCart((prev) =>
+      prev.map((item) => {
+        if (item.id !== id) return item;
+        const newQty = item.qty + delta;
+        if (newQty < 1 || newQty > 9999) return item;
+        return { ...item, qty: newQty };
+      }),
+    );
+  };
+
+  const handleDelete = (id: string) => {
+    setCart((prev) => prev.filter((item) => item.id !== id));
+  };
+
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   return (
@@ -77,7 +92,10 @@ export default function CartReviewScreen() {
             )}
             <View style={styles.actionContainer}>
               <View style={styles.qtyInputContainer}>
-                <Pressable style={styles.qtyInputButton}>
+                <Pressable
+                  style={styles.qtyInputButton}
+                  onPress={() => handleQtyChange(item.id, -1)}
+                >
                   <Feather name="minus" size={12} color="black" />
                 </Pressable>
                 <TextInput
@@ -85,7 +103,10 @@ export default function CartReviewScreen() {
                   value={item.qty.toString()}
                   keyboardType="numeric"
                 />
-                <Pressable style={styles.qtyInputButton}>
+                <Pressable
+                  style={styles.qtyInputButton}
+                  onPress={() => handleQtyChange(item.id, +1)}
+                >
                   <Feather name="plus" size={12} color="black" />
                 </Pressable>
                 <View style={styles.priceInfo}>
@@ -97,7 +118,10 @@ export default function CartReviewScreen() {
                 </View>
               </View>
 
-              <Pressable style={styles.deleteBtn}>
+              <Pressable
+                style={styles.deleteBtn}
+                onPress={() => handleDelete(item.id)}
+              >
                 <MaterialIcons
                   name="delete-outline"
                   size={24}
@@ -134,14 +158,16 @@ export default function CartReviewScreen() {
               styles.paymentOption,
               PaymentMethod === "transfer" && styles.paymentOptionSelected,
             ]}
+            onPress={() => setPaymentMethod("transfer")}
           >
             <Text style={styles.paymentText}>Transfer</Text>
           </Pressable>
           <Pressable
             style={[
               styles.paymentOption,
-              PaymentMethod === "transfer" && styles.paymentOptionSelected,
+              PaymentMethod === "cash" && styles.paymentOptionSelected,
             ]}
+            onPress={() => setPaymentMethod("cash")}
           >
             <Text style={styles.paymentText}>Cash</Text>
           </Pressable>
