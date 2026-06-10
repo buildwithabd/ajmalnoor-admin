@@ -8,6 +8,7 @@ import {
   View,
 } from "react-native";
 
+import { useCart } from "@/context/CartContext";
 import { CartItem, FormErrors, ItemForm } from "@/types";
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -34,10 +35,9 @@ const initialErrors: FormErrors = {
 };
 
 export default function NewSaleScreen() {
-  const [customerName, setCustomerName] = useState("");
+  const { customerName, setCustomerName, cart, addItem, clearCart } = useCart();
   const [itemForm, setItemForm] = useState<ItemForm>(initialItemForm);
   const [errors, setErrors] = useState<FormErrors>(initialErrors);
-  const [cart, setCart] = useState<CartItem[]>([]);
 
   const router = useRouter();
 
@@ -96,7 +96,7 @@ export default function NewSaleScreen() {
         : undefined,
     };
 
-    setCart((prev) => [...prev, newItem]);
+    addItem(newItem);
     setItemForm(initialItemForm);
     setErrors(initialErrors);
   };
@@ -106,13 +106,7 @@ export default function NewSaleScreen() {
   const handleProceedToCartReview = () => {
     if (cart.length === 0) return;
 
-    router.push({
-      pathname: "/new-sale/cart-review",
-      params: {
-        cart: JSON.stringify(cart),
-        customerName,
-      },
-    });
+    router.push("/new-sale/cart-review");
   };
 
   return (
