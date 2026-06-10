@@ -1,7 +1,7 @@
 import { useCart } from "@/context/CartContext";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "expo-router";
-import { useEffect, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import { useEffect } from "react";
 import {
   Pressable,
   ScrollView,
@@ -11,13 +11,18 @@ import {
   View,
 } from "react-native";
 
-type PaymentMethod = "transfer" | "cash";
-
 export default function CartReviewScreen() {
-  const { customerName, cart, removeItem, updateQty } = useCart();
+  const {
+    customerName,
+    cart,
+    removeItem,
+    updateQty,
+    paymentMethod,
+    setPaymentMethod,
+  } = useCart();
 
   const navigation = useNavigation();
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("transfer");
+  const router = useRouter();
 
   useEffect(() => {
     navigation.setOptions({
@@ -127,6 +132,17 @@ export default function CartReviewScreen() {
         ))}
       </View>
 
+      {cart.length === 0 && (
+        <View style={styles.emptyCart}>
+          <Text style={styles.emptyCartText}>No items in cart</Text>
+        </View>
+      )}
+
+      <Pressable style={styles.addMoreBtn} onPress={() => router.back()}>
+        <Feather name="plus" size={16} color="black" />
+        <Text style={styles.addMoreBtnText}>Add another item</Text>
+      </Pressable>
+
       <View style={styles.sectionContainer}>
         <View style={styles.row}>
           <Text style={styles.subtotal}>Subtotal</Text>
@@ -168,7 +184,13 @@ export default function CartReviewScreen() {
         </View>
       </View>
 
-      <Pressable style={styles.previewBtn}>
+      <Pressable
+        style={[
+          styles.previewBtn,
+          cart.length === 0 && styles.previewBtnDisabled,
+        ]}
+        disabled={cart.length === 0}
+      >
         <Feather name="arrow-up-right" size={16} color="black" />
         <Text style={styles.previewBtnText}>Preview receipt</Text>
         <Feather name="arrow-up-right" size={16} color="black" />
@@ -296,6 +318,16 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
 
+  emptyCart: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  emptyCartText: {
+    fontSize: 16,
+    color: "grey",
+  },
+
   row: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -356,6 +388,24 @@ const styles = StyleSheet.create({
     fontWeight: 400,
   },
 
+  addMoreBtn: {
+    flexDirection: "row",
+    width: "100%",
+    paddingVertical: 10,
+    backgroundColor: "transparent",
+    borderRadius: 10,
+    borderWidth: 0.5,
+    borderColor: "#ccc",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+
+  addMoreBtnText: {
+    fontSize: 16,
+    color: "black",
+  },
+
   previewBtn: {
     flexDirection: "row",
     width: "100%",
@@ -368,6 +418,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
+
+  previewBtnDisabled: {
+    opacity: 0.4,
+  },
+
   previewBtnText: {
     fontSize: 16,
     fontWeight: "medium",
