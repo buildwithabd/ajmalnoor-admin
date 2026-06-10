@@ -48,6 +48,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="add-circle-outline" size={24} color={color} />
           ),
+          headerShown: false,
         }}
       />
       <Tabs.Screen
