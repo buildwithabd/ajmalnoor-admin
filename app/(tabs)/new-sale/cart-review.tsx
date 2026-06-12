@@ -190,6 +190,7 @@ export default function CartReviewScreen() {
           cart.length === 0 && styles.previewBtnDisabled,
         ]}
         disabled={cart.length === 0}
+        onPress={() => router.push("/new-sale/receipt-preview")}
       >
         <Feather name="arrow-up-right" size={16} color="black" />
         <Text style={styles.previewBtnText}>Preview receipt</Text>

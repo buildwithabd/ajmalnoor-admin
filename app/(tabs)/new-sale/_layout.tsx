@@ -12,6 +12,7 @@ export default function NewSaleLayout() {
           }}
         />
         <Stack.Screen name="cart-review" options={{}} />
+        <Stack.Screen name="receipt-preview" options={{}} />
       </Stack>
     </CartProvider>
   );
