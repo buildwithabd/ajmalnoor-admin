@@ -3,11 +3,11 @@ import {
   ScrollView,
   StyleSheet,
   Switch,
-  Text,
   TextInput,
   View,
 } from "react-native";
 
+import { Text } from "@/components/typography/Text";
 import { useCart } from "@/context/CartContext";
 import { CartItem, FormErrors, ItemForm } from "@/types";
 import { Feather } from "@expo/vector-icons";
@@ -117,7 +117,12 @@ export default function NewSaleScreen() {
       keyboardShouldPersistTaps="handled"
     >
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionLabel}>CUSTOMER</Text>
+        <Text
+          style={styles.sectionLabel}
+          className="text-green-400 font-inter-medium"
+        >
+          CUSTOMER
+        </Text>
         <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>Name</Text>
           <TextInput
@@ -355,9 +360,8 @@ const styles = StyleSheet.create({
     borderColor: "#dfdede",
   },
   sectionLabel: {
-    fontSize: 14,
+    fontSize: 34,
     fontWeight: "500",
-    color: "#4e4e4b",
     paddingTop: 14,
     paddingBottom: 8,
     paddingHorizontal: 14,
