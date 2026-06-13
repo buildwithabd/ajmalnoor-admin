@@ -5,10 +5,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        inter: ["Inter-Regular"],
-        "inter-medium": ["Inter-Medium"],
-        "inter-semibold": ["Inter-SemiBold"],
-        "inter-bold": ["Inter-Bold"],
+        DMSans: ["DMSans-Regular"],
+        "DMSans-medium": ["DMSans-Medium"],
+        "DMSans-semibold": ["DMSans-SemiBold"],
+        "DMSans-bold": ["DMSans-Bold"],
       },
     },
   },

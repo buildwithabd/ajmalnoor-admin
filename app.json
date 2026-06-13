@@ -38,10 +38,10 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/Inter-Regular.otf",
-            "./assets/fonts/Inter-Medium.otf",
-            "./assets/fonts/Inter-SemiBold.otf",
-            "./assets/fonts/Inter-Bold.otf"
+            "./assets/fonts/DMSans-Regular.otf",
+            "./assets/fonts/DMSans-Medium.otf",
+            "./assets/fonts/DMSans-SemiBold.otf",
+            "./assets/fonts/DMSans-Bold.otf"
           ]
         }
       ]
