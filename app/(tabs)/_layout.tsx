@@ -1,21 +1,16 @@
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
 
-import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import { useColorScheme } from "@/components/useColorScheme";
-import Colors from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarActiveTintColor: "#6366f1",
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
+        headerShown: true,
       }}
     >
       <Tabs.Screen
@@ -32,7 +27,7 @@ export default function TabLayout() {
                   <Ionicons
                     name="information-circle-outline"
                     size={25}
-                    color={Colors[colorScheme ?? "light"].text}
+                    color="#111"
                     style={{ opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
