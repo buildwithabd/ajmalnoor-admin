@@ -37,12 +37,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/DMSans-Regular.otf",
-            "./assets/fonts/DMSans-Medium.otf",
-            "./assets/fonts/DMSans-SemiBold.otf",
-            "./assets/fonts/DMSans-Bold.otf"
-          ]
+          "fonts": []
         }
       ]
     ],
