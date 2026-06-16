@@ -27,6 +27,7 @@ export default function RootLayout() {
     "DMSans-Medium": require("../assets/fonts/DMSans-Medium.ttf"),
     "DMSans-SemiBold": require("../assets/fonts/DMSans-SemiBold.ttf"),
     "DMSans-Bold": require("../assets/fonts/DMSans-Bold.ttf"),
+    CourierNew: require("../assets/fonts/cour.ttf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
