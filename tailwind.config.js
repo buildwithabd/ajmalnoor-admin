@@ -6,9 +6,9 @@ module.exports = {
     extend: {
       fontFamily: {
         DMSans: ["DMSans-Regular"],
-        "DMSans-medium": ["DMSans-Medium"],
-        "DMSans-semibold": ["DMSans-SemiBold"],
-        "DMSans-bold": ["DMSans-Bold"],
+        "DMSans-Medium": ["DMSans-Medium"],
+        "DMSans-SemiBold": ["DMSans-SemiBold"],
+        "DMSans-Bold": ["DMSans-Bold"],
       },
     },
   },
