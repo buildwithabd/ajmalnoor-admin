@@ -1,15 +1,10 @@
+import { Text } from "@/components/typography/Text";
+import { TextInput } from "@/components/typography/TextInput";
 import { useCart } from "@/context/CartContext";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, useRouter } from "expo-router";
 import { useEffect } from "react";
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
 
 export default function CartReviewScreen() {
   const {
@@ -42,49 +37,67 @@ export default function CartReviewScreen() {
 
   return (
     <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.container}
+      className="flex-1 bg-[#faf9f5]"
+      contentContainerClassName="items-center p-[14px] pb-10 gap-3"
     >
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>
-          ITEMS <Text style={styles.fontGrey}>({cart.length})</Text>
+      <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
+        <Text className="text-base px-3.5 py-2.5">
+          ITEMS{" "}
+          <Text className="text-gray-400 font-['DMSans-Regular']">
+            ({cart.length})
+          </Text>
         </Text>
         {cart.map((item) => (
-          <View key={item.id} style={styles.itemContainer}>
-            <View style={styles.itemNameContainer}>
-              <Text style={styles.fontBlack}>{item.name}</Text>
-              <Text style={styles.fontBlack}>
+          <View
+            key={item.id}
+            className="gap-3 px-[14px] py-[10px] border-t-[0.2px] border-t-gray-400"
+          >
+            <View className="flex-row justify-between">
+              <Text className="text-base font-['DMSans-Medium'] text-black">
+                {item.name}
+              </Text>
+              <Text className="text-base font-['DMSans-Medium'] text-black">
                 {"\u20A6"}
                 {(item.price * item.qty).toLocaleString()}
               </Text>
             </View>
             {item.specs && (
-              <View style={styles.specsContainer}>
+              <View className="bg-[#f5f4ed] rounded-lg p-[10px] gap-[2px]">
                 {item.specs?.sn && (
-                  <View style={styles.specContainer}>
-                    <Text style={styles.specName}>SN</Text>
-                    <Text style={styles.specValue}>{item.specs?.sn}</Text>
+                  <View className="flex-row gap-1">
+                    <Text className="w-[55px] text-sm text-[#1d1d1c]">SN</Text>
+                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                      {item.specs?.sn}
+                    </Text>
                   </View>
                 )}
 
                 {item.specs?.ram && (
-                  <View style={styles.specContainer}>
-                    <Text style={styles.specName}>RAM</Text>
-                    <Text style={styles.specValue}>{item.specs?.ram}</Text>
+                  <View className="flex-row gap-1">
+                    <Text className="w-[55px] text-sm text-[#1d1d1c]">RAM</Text>
+                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                      {item.specs?.ram}
+                    </Text>
                   </View>
                 )}
 
                 {item.specs?.rom && (
-                  <View style={styles.specContainer}>
-                    <Text style={styles.specName}>ROM</Text>
-                    <Text style={styles.specValue}>{item.specs?.rom}</Text>
+                  <View className="flex-row gap-1">
+                    <Text className="w-[55px] text-sm text-[#1d1d1c]">ROM</Text>
+                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                      {item.specs?.rom}
+                    </Text>
                   </View>
                 )}
 
                 {item.specs?.touchscreen && (
-                  <View style={styles.specContainer}>
-                    <Text style={styles.specName}>Touch</Text>
-                    <Text style={styles.specValue}>TouchScreen</Text>
+                  <View className="flex-row gap-1">
+                    <Text className="w-[55px] text-sm text-[#1d1d1c]">
+                      Touch
+                    </Text>
+                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                      TouchScreen
+                    </Text>
                   </View>
                 )}
               </View>
@@ -143,7 +156,7 @@ export default function CartReviewScreen() {
         <Text style={styles.addMoreBtnText}>Add another item</Text>
       </Pressable>
 
-      <View style={styles.sectionContainer}>
+      <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
         <View style={styles.row}>
           <Text style={styles.subtotal}>Subtotal</Text>
           <Text style={styles.fontBlack}>
@@ -160,8 +173,8 @@ export default function CartReviewScreen() {
         </View>
       </View>
 
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>PAYMENT METHOD</Text>
+      <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
+        <Text className="text-base px-3.5 py-2.5">PAYMENT METHOD</Text>
         <View style={styles.paymentOptions}>
           <Pressable
             style={[
@@ -209,35 +222,6 @@ const styles = StyleSheet.create({
 
   fontGrey: {
     color: "grey",
-  },
-
-  scrollView: {
-    flex: 1,
-    backgroundColor: "#faf9f5",
-  },
-
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 14,
-    paddingBottom: 40,
-    gap: 12,
-  },
-
-  sectionContainer: {
-    overflow: "hidden",
-    width: "100%",
-    backgroundColor: "white",
-    borderRadius: 15,
-    borderWidth: 0.5,
-    borderColor: "#87878a",
-  },
-
-  sectionTitle: {
-    fontSize: 16,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    fontWeight: "500",
   },
 
   itemContainer: {
