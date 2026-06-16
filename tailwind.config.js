@@ -5,10 +5,11 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        DMSans: ["DMSans-Regular"],
-        "DMSans-Medium": ["DMSans-Medium"],
-        "DMSans-SemiBold": ["DMSans-SemiBold"],
-        "DMSans-Bold": ["DMSans-Bold"],
+        dm: ["DMSans-Regular"],
+        dmMedium: ["DMSans-Medium"],
+        dmSemi: ["DMSans-SemiBold"],
+        dmBold: ["DMSans-Bold"],
+        mono: ["CourierNew"],
       },
     },
   },
