@@ -111,7 +111,7 @@ export default function NewSaleScreen() {
     >
       {/* Customer */}
       <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
-        <Text className="text-base font-['DMSans-SemiBold'] text-black pt-[14px] pb-2 px-[14px]">
+        <Text className="text-base font-dmSemi text-black pt-[14px] pb-2 px-[14px]">
           CUSTOMER
         </Text>
         <View className="h-20 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
@@ -133,7 +133,7 @@ export default function NewSaleScreen() {
 
       {/* Item Details */}
       <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
-        <Text className="text-base font-['DMSans-SemiBold'] text-black pt-[14px] pb-2 px-[14px]">
+        <Text className="text-base font-dmSemi text-black pt-[14px] pb-2 px-[14px]">
           ITEM DETAILS
         </Text>
 
@@ -317,7 +317,7 @@ export default function NewSaleScreen() {
 
       {/* Cart */}
       <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
-        <Text className="text-base font-DMSans-SemiBold text-black m-[14px]">
+        <Text className="text-base font-dmSemi text-black m-[14px]">
           CART{" "}
           <Text className="text-base text-[#494946]">
             ({cart.length} ITEMS)
@@ -331,14 +331,14 @@ export default function NewSaleScreen() {
               className="px-[14px] flex-row items-center justify-between py-3 border-b-[0.5px] border-b-black"
             >
               <View className="flex-col items-start">
-                <Text className="text-base font-['DMSans-Bold'] text-black">
+                <Text className="text-base font-dmBold text-black">
                   {item.name}
                 </Text>
                 <Text className="text-sm text-[#494946]">
                   Qty {item.qty} · {item.type}
                 </Text>
               </View>
-              <Text className="text-base font-['DMSans-Bold'] text-black">
+              <Text className="text-base font-dmBold text-black">
                 ₦{(item.price * item.qty).toLocaleString()}
               </Text>
             </View>
@@ -348,10 +348,8 @@ export default function NewSaleScreen() {
         <View className="flex-row items-center justify-between px-[14px] py-3">
           {cart.length > 0 ? (
             <>
-              <Text className="text-lg font-['DMSans-SemiBold'] text-black">
-                Subtotal
-              </Text>
-              <Text className="text-lg font-['DMSans-SemiBold'] text-black">
+              <Text className="text-lg font-dmSemi text-black">Subtotal</Text>
+              <Text className="text-lg font-dmSemi text-black">
                 ₦{subtotal.toLocaleString()}
               </Text>
             </>

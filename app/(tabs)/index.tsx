@@ -21,13 +21,11 @@ export default function TabOneScreen() {
         <Text style={{ fontFamily: "DMSans-Bold", fontSize: 18 }}>
           Bold — The quick brown fox
         </Text>
-        <Text className="font-['DMSans-Bold'] text-lg">
-          Bold — The quick brown fox
-        </Text>
-        <Text className="font-['DMSans-Medium'] text-lg">
+        <Text className="font-dm text-lg">Bold — The quick brown fox</Text>
+        <Text className="font-dmMedium text-lg">
           Medium — The quick brown fox
         </Text>
-        <Text className="font-['DMSans-SemiBold'] text-3xl text-cyan-600 ">
+        <Text className="font-dmSemi text-3xl text-cyan-600 ">
           SemiBold — The quick brown foxg
         </Text>
       </View>

@@ -42,10 +42,7 @@ export default function CartReviewScreen() {
     >
       <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
         <Text className="text-base px-3.5 py-2.5">
-          ITEMS{" "}
-          <Text className="text-gray-400 font-['DMSans-Regular']">
-            ({cart.length})
-          </Text>
+          ITEMS <Text className="text-gray-400 font-dm">({cart.length})</Text>
         </Text>
         {cart.map((item) => (
           <View
@@ -53,10 +50,8 @@ export default function CartReviewScreen() {
             className="gap-3 px-[14px] py-[10px] border-t-[0.2px] border-t-gray-400"
           >
             <View className="flex-row justify-between">
-              <Text className="text-base font-['DMSans-Medium'] text-black">
-                {item.name}
-              </Text>
-              <Text className="text-base font-['DMSans-Medium'] text-black">
+              <Text className="text-base text-black">{item.name}</Text>
+              <Text className="text-base text-black">
                 {"\u20A6"}
                 {(item.price * item.qty).toLocaleString()}
               </Text>
@@ -66,7 +61,7 @@ export default function CartReviewScreen() {
                 {item.specs?.sn && (
                   <View className="flex-row gap-1">
                     <Text className="w-[55px] text-sm text-[#1d1d1c]">SN</Text>
-                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                    <Text className="text-sm text-[#1b1b1a]">
                       {item.specs?.sn}
                     </Text>
                   </View>
@@ -75,7 +70,7 @@ export default function CartReviewScreen() {
                 {item.specs?.ram && (
                   <View className="flex-row gap-1">
                     <Text className="w-[55px] text-sm text-[#1d1d1c]">RAM</Text>
-                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                    <Text className="text-sm text-[#1b1b1a]">
                       {item.specs?.ram}
                     </Text>
                   </View>
@@ -84,7 +79,7 @@ export default function CartReviewScreen() {
                 {item.specs?.rom && (
                   <View className="flex-row gap-1">
                     <Text className="w-[55px] text-sm text-[#1d1d1c]">ROM</Text>
-                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
+                    <Text className="text-sm text-[#1b1b1a]">
                       {item.specs?.rom}
                     </Text>
                   </View>
@@ -95,9 +90,7 @@ export default function CartReviewScreen() {
                     <Text className="w-[55px] text-sm text-[#1d1d1c]">
                       Touch
                     </Text>
-                    <Text className="text-sm font-['DMSans-Medium'] text-[#1b1b1a]">
-                      TouchScreen
-                    </Text>
+                    <Text className="text-sm text-[#1b1b1a]">TouchScreen</Text>
                   </View>
                 )}
               </View>
@@ -162,22 +155,20 @@ export default function CartReviewScreen() {
       <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#87878a] overflow-hidden">
         <View className="flex-row justify-between items-center px-[14px] h-[45px]">
           <Text className="text-base text-gray-500">Subtotal</Text>
-          <Text className="text-base font-['DMSans-Medium'] text-black">
+          <Text className="text-base text-black">
             ₦{subtotal.toLocaleString()}
           </Text>
         </View>
         <View className="flex-row justify-between items-center px-[14px] h-[45px] border-t-[0.5px] border-t-[#ccc]">
-          <Text className="text-base font-['DMSans-Medium'] text-black">
-            Total
-          </Text>
-          <Text className="text-base font-['DMSans-SemiBold'] text-green-600">
+          <Text className="text-base text-black">Total</Text>
+          <Text className="text-base font-dmSemi text-green-600">
             ₦{subtotal.toLocaleString()}
           </Text>
         </View>
       </View>
 
       <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#87878a] overflow-hidden">
-        <Text className="text-base font-['DMSans-SemiBold'] text-black px-[14px] py-[10px]">
+        <Text className="text-base font-dmSemi text-black px-[14px] py-[10px]">
           PAYMENT METHOD
         </Text>
         <View className="flex-row gap-3 px-[14px] pb-3">
