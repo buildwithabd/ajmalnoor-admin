@@ -138,7 +138,7 @@ export default function NewSaleScreen() {
         </Text>
 
         {/* Name */}
-        <View className="h-16 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
+        <View className="h-20 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
           <Text className="w-[70px] text-lg text-[#494946]">Name</Text>
           <TextInput
             className={`flex-1 border rounded-md px-[10px] ${
@@ -259,7 +259,7 @@ export default function NewSaleScreen() {
                 <Feather name="minus" size={12} color="black" />
               </Pressable>
               <TextInput
-                className="w-[55px] h-[40px] text-center text-[#494946]"
+                className="w-[55px] h-[50px] text-center text-[#494946]"
                 value={itemForm.qty.toString()}
                 onChangeText={(text) => {
                   const parsed = parseInt(text);
