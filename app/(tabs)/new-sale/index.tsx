@@ -1,13 +1,7 @@
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Switch,
-  TextInput,
-  View,
-} from "react-native";
+import { Pressable, ScrollView, Switch, View } from "react-native";
 
 import { Text } from "@/components/typography/Text";
+import { TextInput } from "@/components/typography/TextInput";
 import { useCart } from "@/context/CartContext";
 import { CartItem, FormErrors, ItemForm } from "@/types";
 import { Feather } from "@expo/vector-icons";
@@ -81,7 +75,7 @@ export default function NewSaleScreen() {
     const newItem: CartItem = {
       id: Date.now().toString(),
       name: itemForm.name.trim(),
-      type: itemForm.type!,
+      type: itemForm.type,
       qty: itemForm.qty,
       price: parseFloat(itemForm.price),
       specs: isSpecsRequired
@@ -105,28 +99,27 @@ export default function NewSaleScreen() {
 
   const handleProceedToCartReview = () => {
     if (cart.length === 0) return;
-
     router.push("/new-sale/cart-review");
   };
 
   return (
     <ScrollView
-      style={styles.scrollView}
-      contentContainerStyle={styles.container}
+      className="flex-1 bg-[#faf9f5]"
+      contentContainerClassName="items-center p-[14px] pb-10 gap-3"
       showsVerticalScrollIndicator={false}
       keyboardShouldPersistTaps="handled"
     >
-      <View style={styles.sectionContainer}>
-        <Text
-          style={styles.sectionLabel}
-          className="text-green-400 font-inter-medium"
-        >
+      {/* Customer */}
+      <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
+        <Text className="text-base font-['DMSans-SemiBold'] text-black pt-[14px] pb-2 px-[14px]">
           CUSTOMER
         </Text>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Name</Text>
+        <View className="h-20 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
+          <Text className="w-[70px] text-lg text-[#494946]">Name</Text>
           <TextInput
-            style={[styles.input, errors.customer && styles.inputError]}
+            className={`flex-1 border rounded-md px-[10px] ${
+              errors.customer ? "border-[#E24B4A]" : "border-[#ccc]"
+            }`}
             value={customerName}
             onChangeText={(text) => {
               setCustomerName(text);
@@ -138,12 +131,19 @@ export default function NewSaleScreen() {
         </View>
       </View>
 
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionLabel}>ITEM DETAILS</Text>
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Name</Text>
+      {/* Item Details */}
+      <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
+        <Text className="text-base font-['DMSans-SemiBold'] text-black pt-[14px] pb-2 px-[14px]">
+          ITEM DETAILS
+        </Text>
+
+        {/* Name */}
+        <View className="h-16 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
+          <Text className="w-[70px] text-lg text-[#494946]">Name</Text>
           <TextInput
-            style={[styles.input, errors.name && styles.inputError]}
+            className={`flex-1 border rounded-md px-[10px] ${
+              errors.name ? "border-[#E24B4A]" : "border-[#ccc]"
+            }`}
             value={itemForm.name}
             onChangeText={(text) => {
               setItemForm((prev) => ({ ...prev, name: text }));
@@ -153,23 +153,23 @@ export default function NewSaleScreen() {
           />
         </View>
 
-        <View style={styles.typeContainer}>
-          <Text style={styles.typeLabel}>Type</Text>
-          <View style={styles.typeButtonsContainer}>
+        {/* Type */}
+        <View className="border-t-[0.5px] border-t-[#ccc] pt-1 px-[14px]">
+          <Text className="text-lg text-[#60605e]">Type</Text>
+          <View className="h-[68px] flex-row items-center justify-center gap-[10px]">
             {types.map((type, index) => {
               const isSelected = itemForm.type === type;
               return (
                 <Pressable
                   key={index}
-                  onPress={() => {
-                    setItemForm((prev) => ({ ...prev, type: type }));
-                  }}
-                  style={[
-                    styles.typeButton,
-                    isSelected && styles.selectedTypeButton,
-                  ]}
+                  onPress={() => setItemForm((prev) => ({ ...prev, type }))}
+                  className={`flex-1 h-10 rounded-md border items-center justify-center ${
+                    isSelected
+                      ? "bg-[#f0f0f0] border-[#494946]"
+                      : "border-[#ccc]"
+                  }`}
                 >
-                  <Text style={styles.typeButtonText}>
+                  <Text className="text-lg text-black">
                     {type.charAt(0).toUpperCase() + type.slice(1)}
                   </Text>
                 </Pressable>
@@ -178,12 +178,15 @@ export default function NewSaleScreen() {
           </View>
         </View>
 
+        {/* Specs — laptop or phone only */}
         {(itemForm.type === "laptop" || itemForm.type === "phone") && (
           <>
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>S/N</Text>
+            <View className="h-20 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
+              <Text className="w-[70px] text-lg text-[#494946]">S/N</Text>
               <TextInput
-                style={[styles.input, errors.sn && styles.inputError]}
+                className={`flex-1 text-2xl border rounded-md px-[10px] ${
+                  errors.sn ? "border-[#E24B4A]" : "border-[#ccc]"
+                }`}
                 value={itemForm.sn}
                 onChangeText={(text) => {
                   setItemForm((prev) => ({ ...prev, sn: text }));
@@ -193,10 +196,12 @@ export default function NewSaleScreen() {
               />
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>RAM</Text>
+            <View className="h-20 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
+              <Text className="w-[70px] text-lg text-[#494946]">RAM</Text>
               <TextInput
-                style={[styles.input, errors.ram && styles.inputError]}
+                className={`flex-1 border rounded-md px-[10px] ${
+                  errors.ram ? "border-[#E24B4A]" : "border-[#ccc]"
+                }`}
                 value={itemForm.ram}
                 onChangeText={(text) => {
                   setItemForm((prev) => ({ ...prev, ram: text }));
@@ -207,10 +212,12 @@ export default function NewSaleScreen() {
               />
             </View>
 
-            <View style={styles.inputContainer}>
-              <Text style={styles.inputLabel}>ROM</Text>
+            <View className="h-20 border-t-[0.5px] border-t-[#ccc] flex-row items-center px-[14px]">
+              <Text className="w-[70px] text-lg text-[#494946]">ROM</Text>
               <TextInput
-                style={[styles.input, errors.rom && styles.inputError]}
+                className={`flex-1 border rounded-md px-[10px] ${
+                  errors.rom ? "border-[#E24B4A]" : "border-[#ccc]"
+                }`}
                 value={itemForm.rom}
                 onChangeText={(text) => {
                   setItemForm((prev) => ({ ...prev, rom: text }));
@@ -223,33 +230,36 @@ export default function NewSaleScreen() {
           </>
         )}
 
+        {/* Touchscreen — laptop only */}
         {itemForm.type === "laptop" && (
-          <View style={styles.touchscreenContainer}>
-            <Text style={styles.touchscreenLabel}>Touchscreen</Text>
+          <View className="border-t-[0.5px] border-t-[#ccc] flex-row items-center justify-between px-[14px]">
+            <Text className="text-lg text-[#494946]">Touchscreen</Text>
             <Switch
               value={itemForm.touchscreen}
-              onValueChange={(newValue) => {
-                setItemForm((prev) => ({
-                  ...prev,
-                  touchscreen: newValue,
-                }));
-              }}
-              trackColor={{ true: "#494946", false: "#ccc" }}
-              thumbColor={itemForm.touchscreen ? "#494946" : "#fff"}
-              style={styles.touchscreenSwitch}
+              onValueChange={(newValue) =>
+                setItemForm((prev) => ({ ...prev, touchscreen: newValue }))
+              }
+              trackColor={{ true: "#1D9E75", false: "#ccc" }}
+              thumbColor={itemForm.touchscreen ? "#fff" : "#fff"}
+              style={{ transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }] }}
             />
           </View>
         )}
 
-        <View style={styles.numberInputContainer}>
-          <View style={styles.qtyContainer}>
-            <Text style={styles.qtyLabel}>Qty</Text>
-            <View style={styles.qtyInputContainer}>
-              <Pressable style={styles.qtyInputButton} onPress={qtyDecrement}>
+        {/* Qty + Price */}
+        <View className="border-t-[0.5px] border-t-[#ccc] flex-row items-center justify-between px-[14px] py-3">
+          {/* Qty */}
+          <View className="flex-row items-center gap-2">
+            <Text className="text-lg text-[#494946]">Qty</Text>
+            <View className="flex-row items-center">
+              <Pressable
+                className="w-[30px] h-[25px] items-center justify-center rounded-md border border-[#ccc]"
+                onPress={qtyDecrement}
+              >
                 <Feather name="minus" size={12} color="black" />
               </Pressable>
               <TextInput
-                style={styles.qtyInput}
+                className="w-[55px] h-[40px] text-center text-[#494946]"
                 value={itemForm.qty.toString()}
                 onChangeText={(text) => {
                   const parsed = parseInt(text);
@@ -264,19 +274,25 @@ export default function NewSaleScreen() {
                 }}
                 keyboardType="numeric"
               />
-              <Pressable style={styles.qtyInputButton} onPress={qtyIncrement}>
+              <Pressable
+                className="w-[30px] h-[25px] items-center justify-center rounded-md border border-[#ccc]"
+                onPress={qtyIncrement}
+              >
                 <Feather name="plus" size={12} color="black" />
               </Pressable>
             </View>
           </View>
 
-          <View style={styles.priceContainer}>
-            <View style={styles.priceLabelContainer}>
-              <Text style={styles.priceLabel}>Price</Text>
-              <Text style={styles.priceLabel}>({"\u20A6"})</Text>
+          {/* Price */}
+          <View className="flex-row items-center gap-2">
+            <View className="flex-col items-start">
+              <Text className="text-lg text-[#494946] leading-4">Price</Text>
+              <Text className="text-lg text-[#494946] leading-4">(₦)</Text>
             </View>
             <TextInput
-              style={[styles.priceInput, errors.price && styles.inputError]}
+              className={`w-[120px] border rounded-md text-center text-[#494946] ${
+                errors.price ? "border-[#E24B4A]" : "border-[#ccc]"
+              }`}
               value={itemForm.price}
               onChangeText={(number) => {
                 setItemForm((prev) => ({ ...prev, price: number }));
@@ -284,328 +300,77 @@ export default function NewSaleScreen() {
                   setErrors((prev) => ({ ...prev, price: false }));
               }}
               placeholder="0.00"
+              keyboardType="numeric"
             />
           </View>
         </View>
       </View>
 
-      <Pressable style={styles.cartBtn} onPress={handleAddToCart}>
+      {/* Add to cart button */}
+      <Pressable
+        className="flex-row w-full py-[10px] bg-transparent rounded-xl border-[0.5px] border-[#494946] items-center justify-center gap-2"
+        onPress={handleAddToCart}
+      >
         <Feather name="shopping-cart" size={16} color="black" />
-        <Text style={styles.cartBtnText}>Add to cart</Text>
+        <Text className="text-xl text-black">Add to cart</Text>
       </Pressable>
 
-      <View style={styles.cartContainer}>
-        <Text style={styles.cartTitle}>
-          CART <Text style={styles.cartTitleCount}>({cart.length} ITEMS)</Text>
+      {/* Cart */}
+      <View className="w-full bg-white rounded-2xl border-[0.5px] border-[#dfdede] overflow-hidden">
+        <Text className="text-base font-DMSans-SemiBold text-black m-[14px]">
+          CART{" "}
+          <Text className="text-base text-[#494946]">
+            ({cart.length} ITEMS)
+          </Text>
         </Text>
 
-        <View style={styles.cartItemContainer}>
+        <View className="gap-[1px]">
           {cart.map((item) => (
-            <View style={styles.cartItem} key={item.id}>
-              <View style={styles.cartItemDetails}>
-                <Text style={styles.cartItemTitle}>{item.name}</Text>
-                <Text>
-                  Qty {item.qty} {"\u00B7"} {item.type}
+            <View
+              key={item.id}
+              className="px-[14px] flex-row items-center justify-between py-3 border-b-[0.5px] border-b-black"
+            >
+              <View className="flex-col items-start">
+                <Text className="text-base font-['DMSans-Bold'] text-black">
+                  {item.name}
+                </Text>
+                <Text className="text-sm text-[#494946]">
+                  Qty {item.qty} · {item.type}
                 </Text>
               </View>
-              <Text style={styles.cartItemPrice}>
-                {"\u20A6"}
-                {(item.price * item.qty).toLocaleString()}
+              <Text className="text-base font-['DMSans-Bold'] text-black">
+                ₦{(item.price * item.qty).toLocaleString()}
               </Text>
             </View>
           ))}
         </View>
 
-        <View style={styles.cartSubTotalContainer}>
+        <View className="flex-row items-center justify-between px-[14px] py-3">
           {cart.length > 0 ? (
             <>
-              <Text style={styles.cartSubTotalTitle}>Subtotal</Text>
-              <Text style={styles.cartSubTotalPrice}>
-                {"\u20A6"}
-                {subtotal.toLocaleString()}
+              <Text className="text-lg font-['DMSans-SemiBold'] text-black">
+                Subtotal
+              </Text>
+              <Text className="text-lg font-['DMSans-SemiBold'] text-black">
+                ₦{subtotal.toLocaleString()}
               </Text>
             </>
           ) : (
-            <Text style={styles.cartNoItem}>No items yet</Text>
+            <Text className="flex-1 text-base text-[#494946] text-center">
+              No items yet
+            </Text>
           )}
         </View>
       </View>
 
-      <Pressable style={styles.cartBtn} onPress={handleProceedToCartReview}>
-        <Text style={styles.cartBtnText}>Proceed to cart review</Text>
+      {/* Proceed button */}
+      <Pressable
+        className="flex-row w-full py-[10px] bg-transparent rounded-xl border-[0.5px] border-[#494946] items-center justify-center gap-2"
+        onPress={handleProceedToCartReview}
+      >
+        <Text className="text-xl text-black">Proceed to cart review</Text>
         <Feather name="arrow-up-right" size={16} color="black" />
       </Pressable>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    flex: 1,
-    backgroundColor: "#faf9f5",
-  },
-  container: {
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 14,
-    paddingBottom: 40,
-    gap: 12,
-  },
-  sectionContainer: {
-    overflow: "hidden",
-    width: "100%",
-    backgroundColor: "white",
-    borderRadius: 15,
-    borderWidth: 0.5,
-    borderColor: "#dfdede",
-  },
-  sectionLabel: {
-    fontSize: 34,
-    fontWeight: "500",
-    paddingTop: 14,
-    paddingBottom: 8,
-    paddingHorizontal: 14,
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  inputContainer: {
-    height: 64,
-    borderTopWidth: 0.5,
-    borderTopColor: "#ccc",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 14,
-  },
-  inputLabel: {
-    width: 70,
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "#494946",
-  },
-  input: {
-    flex: 1,
-    fontSize: 18,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    paddingHorizontal: 10,
-  },
-  inputError: {
-    borderColor: "#E24B4A",
-    borderWidth: 1,
-  },
-  typeContainer: {
-    paddingTop: 4,
-    borderTopWidth: 0.5,
-    borderTopColor: "#ccc",
-    flexDirection: "column",
-    justifyContent: "center",
-    paddingHorizontal: 14,
-  },
-  typeLabel: {
-    width: 70,
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "#60605e",
-  },
-  typeButtonsContainer: {
-    height: 68,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
-  },
-  typeButton: {
-    flex: 1,
-    height: 40,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  typeButtonText: {
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "black",
-  },
-  selectedTypeButton: {
-    backgroundColor: "#f0f0f0",
-    color: "#fff",
-  },
-  touchscreenContainer: {
-    borderTopWidth: 0.5,
-    borderTopColor: "#ccc",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 14,
-  },
-  touchscreenLabel: {
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "#494946",
-  },
-  touchscreenSwitch: {
-    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
-  },
-  numberInputContainer: {
-    borderTopWidth: 0.5,
-    borderTopColor: "#ccc",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-  },
-  qtyContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 8,
-  },
-  qtyLabel: {
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "#494946",
-  },
-  qtyInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  qtyInput: {
-    width: 55,
-    height: 40,
-    borderColor: "#ccc",
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "medium",
-    color: "#494946",
-  },
-  qtyInputButton: {
-    width: 30,
-    height: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
-  priceContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 8,
-  },
-  priceLabelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 4,
-  },
-  priceLabel: {
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "#494946",
-    lineHeight: 16,
-  },
-  priceInput: {
-    width: 120,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "medium",
-    color: "#494946",
-  },
-  cartBtn: {
-    flexDirection: "row",
-    width: "100%",
-    paddingVertical: 10,
-    backgroundColor: "transparent",
-    borderRadius: 10,
-    borderWidth: 0.5,
-    borderColor: "#494946",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-  },
-  cartBtnText: {
-    fontSize: 16,
-    fontWeight: "medium",
-    color: "black",
-  },
-  cartContainer: {
-    overflow: "hidden",
-    width: "100%",
-    backgroundColor: "white",
-    borderRadius: 15,
-    borderWidth: 0.5,
-    borderColor: "#dfdede",
-  },
-  cartTitle: {
-    fontSize: 16,
-    color: "black",
-    margin: 14,
-  },
-  cartTitleCount: {
-    fontSize: 16,
-    color: "#494946",
-  },
-  cartItemContainer: {
-    gap: 1,
-  },
-  cartItem: {
-    paddingHorizontal: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 12,
-    borderBottomWidth: 0.5,
-    borderBottomColor: "black",
-  },
-  cartItemDetails: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  cartItemTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-  cartItemPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-  cartSubTotalContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 14,
-    paddingVertical: 12,
-  },
-  cartNoItem: {
-    flex: 1,
-    fontSize: 16,
-    color: "#494946",
-    textAlign: "center",
-  },
-  cartSubTotalTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-  cartSubTotalPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-});
