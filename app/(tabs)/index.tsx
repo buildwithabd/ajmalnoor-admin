@@ -28,6 +28,8 @@ export default function TabOneScreen() {
         <Text className="font-dmSemi text-3xl text-cyan-600 ">
           SemiBold — The quick brown foxg
         </Text>
+
+        <Text className="text-red-500 text-3xl bg-green-700">Test listing</Text>
       </View>
     </View>
   );
