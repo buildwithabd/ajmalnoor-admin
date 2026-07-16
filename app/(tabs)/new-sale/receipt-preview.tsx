@@ -1,5 +1,6 @@
-import { ScrollView, View } from "react-native";
 import "../../../global.css";
+
+import { Pressable, ScrollView, View } from "react-native";
 
 import { Text } from "@/components/typography/Text";
 import { TextMono } from "@/components/typography/TextMono";
@@ -128,7 +129,7 @@ export default function ReceiptPreviewScreen() {
                         Touch
                       </TextMono>
                       <TextMono className="text-sm text-[#1b1b1a]">
-                        TouchScreen
+                        Touchscreen
                       </TextMono>
                     </View>
                   )}
@@ -169,6 +170,55 @@ export default function ReceiptPreviewScreen() {
             <TextMono className="text-sm">ajmalnoor.com/verify/00149</TextMono>
           </View>
         </View>
+      </View>
+
+      <View className="gap-3">
+        <Pressable
+          className="flex-row items-center justify-center"
+          style={{
+            borderColor: "grey",
+            borderWidth: 1,
+            borderRadius: 10,
+            height: 44,
+          }}
+        >
+          <Text className="text-[16px]">Confirm & Print</Text>
+        </Pressable>
+
+        <View className="w-full flex-row justify-between items-center gap-3">
+          <Pressable
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              borderColor: "grey",
+              borderWidth: 1,
+              borderRadius: 10,
+              height: 64,
+              paddingHorizontal: 20,
+            }}
+          >
+            <Text className="text-[16px]">Share via WhatsApp</Text>
+          </Pressable>
+          <Pressable
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              borderColor: "grey",
+              borderWidth: 1,
+              borderRadius: 10,
+              height: 64,
+              paddingHorizontal: 20,
+            }}
+          >
+            <Text className="text-[16px]">Save PDF</Text>
+          </Pressable>
+        </View>
+
+        <Pressable>
+          <Text>Done view in history</Text>
+        </Pressable>
       </View>
     </ScrollView>
   );
