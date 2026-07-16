@@ -1,12 +1,13 @@
 import "../../../global.css";
 
+import { useNavigation, useRouter } from "expo-router";
+import { Printer } from "lucide-react-native";
+import { useEffect, useRef } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 
 import { Text } from "@/components/typography/Text";
 import { TextMono } from "@/components/typography/TextMono";
 import { useCart } from "@/context/CartContext";
-import { useNavigation, useRouter } from "expo-router";
-import { useEffect, useRef } from "react";
 
 export default function ReceiptPreviewScreen() {
   const { cart, customerName, paymentMethod, clearCart } = useCart();
@@ -182,6 +183,7 @@ export default function ReceiptPreviewScreen() {
             height: 44,
           }}
         >
+          <Printer />
           <Text className="text-[16px]">Confirm & Print</Text>
         </Pressable>
 
