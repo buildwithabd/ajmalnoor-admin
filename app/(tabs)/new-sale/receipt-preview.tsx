@@ -1,13 +1,14 @@
 import "../../../global.css";
 
 import { useNavigation, useRouter } from "expo-router";
-import { Printer } from "lucide-react-native";
+import { ArrowUpRight, Printer } from "lucide-react-native";
 import { useEffect, useRef } from "react";
 import { Pressable, ScrollView, View } from "react-native";
 
 import { Text } from "@/components/typography/Text";
 import { TextMono } from "@/components/typography/TextMono";
 import { useCart } from "@/context/CartContext";
+import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
 
 export default function ReceiptPreviewScreen() {
   const { cart, customerName, paymentMethod, clearCart } = useCart();
@@ -175,7 +176,7 @@ export default function ReceiptPreviewScreen() {
 
       <View className="gap-3">
         <Pressable
-          className="flex-row items-center justify-center"
+          className="flex-row items-center justify-center gap-3"
           style={{
             borderColor: "grey",
             borderWidth: 1,
@@ -183,7 +184,7 @@ export default function ReceiptPreviewScreen() {
             height: 44,
           }}
         >
-          <Printer />
+          <Printer size={20} />
           <Text className="text-[16px]">Confirm & Print</Text>
         </Pressable>
 
@@ -194,19 +195,30 @@ export default function ReceiptPreviewScreen() {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "center",
+              gap: 20,
               borderColor: "grey",
               borderWidth: 1,
               borderRadius: 10,
               height: 64,
-              paddingHorizontal: 20,
             }}
           >
-            <Text className="text-[16px]">Share via WhatsApp</Text>
+            <FontAwesome5 name="whatsapp" size={20} />
+            <Text
+              className="text-[16px]"
+              style={{
+                width: 80,
+              }}
+            >
+              Share via WhatsApp
+            </Text>
           </Pressable>
           <Pressable
             style={{
               flex: 1,
+              flexDirection: "row",
+              alignItems: "center",
               justifyContent: "center",
+              gap: 10,
               borderColor: "grey",
               borderWidth: 1,
               borderRadius: 10,
@@ -214,12 +226,22 @@ export default function ReceiptPreviewScreen() {
               paddingHorizontal: 20,
             }}
           >
+            <FontAwesome6 name="file-pdf" size={20} />
             <Text className="text-[16px]">Save PDF</Text>
           </Pressable>
         </View>
 
-        <Pressable>
-          <Text>Done view in history</Text>
+        <Pressable
+          className="flex-row items-center justify-center gap-2"
+          style={{
+            borderColor: "grey",
+            borderWidth: 1,
+            borderRadius: 10,
+            height: 44,
+          }}
+        >
+          <Text className="text-[16px]">Done — view in history</Text>
+          <ArrowUpRight size={20} />
         </Pressable>
       </View>
     </ScrollView>
