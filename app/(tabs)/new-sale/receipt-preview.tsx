@@ -88,83 +88,148 @@ export default function ReceiptPreviewScreen() {
               color: #000000;
               background-color: #ffffff;
               margin: 0;
-              padding: 24px 16px;
+              padding: 0;
+              font-size: 15px;
             }
             .container {
+              width: 100%;
               max-width: 280px;
               margin: 0 auto;
+              padding: 0 10px;
+              box-sizing: border-box;
             }
             .header {
               text-align: center;
-              padding-bottom: 12px;
+              padding: 16px 0 12px;
               border-bottom: 0.5px solid #000000;
-              margin-bottom: 12px;
+              margin-bottom: 10px;
             }
             .company-name {
-              font-size: 20px;
+              font-size: 18px;
               font-weight: bold;
               margin: 0 0 4px 0;
-              letter-spacing: 0.5px;
+              letter-spacing: 1px;
             }
             .company-meta {
               font-size: 13px;
               margin: 2px 0;
+              color #333;
             }
             .meta-section {
-              font-size: 14px;
-              padding-bottom: 12px;
+              font-size: 12px;
+              padding-bottom: 8px 0;
               display: flex;
               flex-direction: column;
-              gap: 4px;
+              gap: 3px;
+              border-bottom: 0.5px dashed #9ca3af;
+              margin-bottom: 8px;
+
             }
             .row-justify {
               display: flex;
               justify-content: space-between;
             }
             .customer-banner {
-              font-size: 14px;
+              font-size: 12px;
               padding: 8px 0;
-              border-top: 0.5px dashed #000000;
               border-bottom: 0.5px dashed #000000;
-              margin-bottom: 12px;
+              margin-bottom: 10px;
             }
             .table-header {
               display: flex;
-              justify-content: space-between;
-              font-size: 13px;
+              font-size: 11px;
               font-weight: bold;
-              padding-bottom: 6px;
+              padding-bottom: 5px;
               border-bottom: 0.5px solid #444444;
-              margin-bottom: 10px;
+              margin-bottom: 8px;
+              letter-spacing: 0.3px;
             }
             .items-container {
               border-bottom: 0.5px solid #000000;
               padding-bottom: 8px;
-              margin-bottom: 12px;
+              margin-bottom: 10px;
             }
+            item-row {
+              margin-bottom: 10px;
+            }
+            .item-main {
+              display: flex;
+              font-size: 12px;
+              font-weight: bold;
+              letter-spacing: -0.2px;
+            }
+            .specs-block {
+              background-color: #f5f4ed;
+              border-radius: 4px;
+              padding: 5px 8px;
+              margin-top: 4px;
+              font-size: 11px;
+              color: #1d1d1c;
+            }
+            .spec-row {
+              display: flex;
+              gap: 4px;
+            }
+            .spec-key {
+              display: inline-block;
+              width: 40px;
+              color: #666;
+            }
+
             .totals-section {
-              font-size: 14px;
+              font-size: 12px;
               display: flex;
               flex-direction: column;
-              gap: 6px;
+              gap: 5px;
+              padding-bottom: 10px;
+              border-bottom: 0.5px dashed #9ca3af;
               margin-bottom: 16px;
+            }
+            .divider {
+              border-top: 0.5px solid #000000;
+              margin: 3px 0;
             }
             .total-row {
               font-size: 18px;
               font-weight: bold;
             }
-            .divider {
-              border-top: 0.5px solid #000000;
-              margin: 4px 0;
+
+            .payment-section {
+              font-size: 12px;
+              display: flex;
+              flex-direction: column;
+              gap: 3px;
+              padding-bottom: 10px;
+              border-bottom: 0.5px dashed #9ca3af;
+              margin-bottom: 10px;
+            }
+            
+            .qr-section {
+              text-align: center;
+              padding: 10px 0;
+              border-bottom: 0.5px dashed #9ca3af;
+              margin-bottom: 10px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 6px;
+            }
+            .qr-label {
+              font-size: 11px;
+              color: #555;
+            }
+            .qr-url {
+              font-size: 10px;
+              color: #333;
             }
             .footer-banner {
               text-align: center;
-              font-size: 13px;
-              padding-top: 12px;
-              border-top: 0.5px dashed #000000;
+              font-size: 11px;
+              padding-top: 8px 0 16px;
               display: flex;
               flex-direction: column;
-              gap: 4px;
+              gap: 3px;
+              color: #333;
             }
           </style>
         </head>
@@ -183,13 +248,13 @@ export default function ReceiptPreviewScreen() {
             </div>
 
             <div class="customer-banner">
-              Customer: ${customerName || "John Adebayo"}
+              Customer: ${customerName}
             </div>
 
             <div class="table-header">
-              <span style="flex: 1; text-align: left;">Item</span>
-              <span style="width: 50px; text-align: center;">Qty</span>
-              <span style="width: 100px; text-align: right;">Total</span>
+              <span style="flex: 1;">Item</span>
+              <span style="width: 40px;text-align: center;">Qty</span>
+              <span style="width: 80px; text-align: right;">Total</span>
             </div>
 
             <div class="items-container">
@@ -208,11 +273,27 @@ export default function ReceiptPreviewScreen() {
               </div>
             </div>
 
+            <div class="payment-section">
+              <div class="row-justify">
+                <span>Payment</span>
+                <span>${paymentMethod === "cash" ? "Cash" : "Transfer"}</span>
+              </div>
+            </div>
+
+            <div class="qr-section">
+              <span class="qr-label">Scan to verify this receipt</span>
+              <img 
+                src="https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=https://ajmalnoor.com/verify/${receiptNumber}" 
+                width="80" 
+                height="80"
+              />
+              <span class="qr-url">ajmalnoor.com/verify/${receiptNumber}</span>
+            </div>
+
             <div class="footer-banner">
               <div>Thank you for your purchase!</div>
-              <div style="border-top: 0.5px dashed #000000; margin: 6px 0;"></div>
-              <div style="color: #444;">Scan to verify this receipt</div>
-              <div style="font-weight: bold;">://ajmalnoor.com${receiptNumber}</div>
+              <div>7-day return &nbsp;|&nbsp; 3-month warranty</div>
+              <div>Keep this receipt as proof of purchase</div>
             </div>
           </div>
         </body>
