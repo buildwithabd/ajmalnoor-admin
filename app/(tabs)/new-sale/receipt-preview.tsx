@@ -44,11 +44,11 @@ export default function ReceiptPreviewScreen() {
     const itemsRows = cart
       .map(
         (item) => `
-      <div style="margin-bottom: 12px;">
+      <div>
         <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: bold;">
           <span style="flex: 1; text-align: left;">${item.name}</span>
-          <span style="width: 50px; text-align: center;">${item.qty}</span>
-          <span style="width: 100px; text-align: right;">${(item.price * item.qty).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <span style="width: 40px; text-align: center;">${item.qty}</span>
+          <span style="width: 90px; text-align: right;">${(item.price * item.qty).toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
         </div>
         ${
           item.specs
@@ -75,13 +75,6 @@ export default function ReceiptPreviewScreen() {
           <style>
             @page { size: 80mm auto; margin: 0; }
 
-            @media print {
-              body { 
-                width: 80mm; 
-                margin: 0; 
-                padding: 8px; 
-              }
-            }
 
             body {
               font-family: 'Courier New', Courier, monospace;
@@ -101,7 +94,7 @@ export default function ReceiptPreviewScreen() {
             .header {
               text-align: center;
               padding: 16px 0 12px;
-              border-bottom: 0.5px solid #000000;
+              border-bottom: 0.25px solid #000000;
               margin-bottom: 10px;
             }
             .company-name {
@@ -117,63 +110,35 @@ export default function ReceiptPreviewScreen() {
             }
             .meta-section {
               font-size: 12px;
-              padding-bottom: 8px 0;
+              padding: 8px 10px;
               display: flex;
               flex-direction: column;
               gap: 3px;
-              border-bottom: 0.5px dashed #9ca3af;
-              margin-bottom: 8px;
-
             }
+              
             .row-justify {
               display: flex;
               justify-content: space-between;
             }
             .customer-banner {
               font-size: 12px;
-              padding: 8px 0;
-              border-bottom: 0.5px dashed #000000;
-              margin-bottom: 10px;
+              padding: 10px;
+              border-top: 0.5px dashed #9ca3af;
+              border-bottom: 0.5px dashed #9ca3af;
             }
+
             .table-header {
               display: flex;
               font-size: 11px;
               font-weight: bold;
-              padding-bottom: 5px;
-              border-bottom: 0.5px solid #444444;
-              margin-bottom: 8px;
+              padding: 8px 0;
+              margin: 0 10px;
+              border-bottom: 0.25px solid #c4c4c4;
               letter-spacing: 0.3px;
             }
             .items-container {
-              border-bottom: 0.5px solid #000000;
-              padding-bottom: 8px;
-              margin-bottom: 10px;
-            }
-            item-row {
-              margin-bottom: 10px;
-            }
-            .item-main {
-              display: flex;
-              font-size: 12px;
-              font-weight: bold;
-              letter-spacing: -0.2px;
-            }
-            .specs-block {
-              background-color: #f5f4ed;
-              border-radius: 4px;
-              padding: 5px 8px;
-              margin-top: 4px;
-              font-size: 11px;
-              color: #1d1d1c;
-            }
-            .spec-row {
-              display: flex;
-              gap: 4px;
-            }
-            .spec-key {
-              display: inline-block;
-              width: 40px;
-              color: #666;
+              border-bottom: 0.25px solid #c4c4c4;
+              padding: 15px 10px;
             }
 
             .totals-section {
@@ -181,16 +146,21 @@ export default function ReceiptPreviewScreen() {
               display: flex;
               flex-direction: column;
               gap: 5px;
-              padding-bottom: 10px;
+              padding: 12px 10px;
               border-bottom: 0.5px dashed #9ca3af;
-              margin-bottom: 16px;
             }
             .divider {
-              border-top: 0.5px solid #000000;
-              margin: 3px 0;
+              border-top: 0.5px solid #c4c4c4;
+            }
+            .dashed-divider {
+              border-bottom: 0.5px dashed #9ca3af;
+            }
+            .subtotal-row {
+              font-size: 14px;
+              font-weight: medium;
             }
             .total-row {
-              font-size: 18px;
+              font-size: 16px;
               font-weight: bold;
             }
 
@@ -199,9 +169,8 @@ export default function ReceiptPreviewScreen() {
               display: flex;
               flex-direction: column;
               gap: 3px;
-              padding-bottom: 10px;
+              padding: 10px;
               border-bottom: 0.5px dashed #9ca3af;
-              margin-bottom: 10px;
             }
             
             .qr-section {
@@ -225,10 +194,10 @@ export default function ReceiptPreviewScreen() {
             .footer-banner {
               text-align: center;
               font-size: 11px;
-              padding-top: 8px 0 16px;
+              padding: 8px 10px;
               display: flex;
               flex-direction: column;
-              gap: 3px;
+              gap: 8px;
               color: #333;
             }
           </style>
@@ -242,9 +211,13 @@ export default function ReceiptPreviewScreen() {
             </div>
             
             <div class="meta-section">
-              <div class="row-justify"><span>Date</span><span>${date}</span></div>
-              <div class="row-justify"><span>Time</span><span>${time}</span></div>
-              <div class="row-justify"><span>Receipt #</span><span>${receiptNumber}</span></div>
+              <div class="row-justify">
+                <div>
+                  <span>Date: </span><span>${date}</span>
+                </div>
+                <div><span>Time: </span><span>${time}</span></div>
+              </div>
+              <div><span>Receipt #</span><span>${receiptNumber}</span></div>
             </div>
 
             <div class="customer-banner">
@@ -254,7 +227,7 @@ export default function ReceiptPreviewScreen() {
             <div class="table-header">
               <span style="flex: 1;">Item</span>
               <span style="width: 40px;text-align: center;">Qty</span>
-              <span style="width: 80px; text-align: right;">Total</span>
+              <span style="width: 90px; text-align: right;">Total</span>
             </div>
 
             <div class="items-container">
@@ -262,14 +235,14 @@ export default function ReceiptPreviewScreen() {
             </div>
 
             <div class="totals-section">
-              <div class="row-justify">
+              <div class="row-justify subtotal-row">
                 <span>Subtotal</span>
-                <span>&#8358;${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                <span>&#8358;${subtotal.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
               </div>
               <div class="divider"></div>
               <div class="row-justify total-row">
                 <span>TOTAL</span>
-                <span>&#8358;${subtotal.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
+                <span>&#8358;${subtotal.toLocaleString(undefined, { minimumFractionDigits: 0 })}</span>
               </div>
             </div>
 
@@ -292,6 +265,7 @@ export default function ReceiptPreviewScreen() {
 
             <div class="footer-banner">
               <div>Thank you for your purchase!</div>
+              <div class="dashed-divider"></div>
               <div>7-day return &nbsp;|&nbsp; 3-month warranty</div>
               <div>Keep this receipt as proof of purchase</div>
             </div>
