@@ -40,7 +40,8 @@
         {
           "fonts": []
         }
-      ]
+      ],
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true
