@@ -1,17 +1,17 @@
 import "../../../global.css";
 
+import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
+import * as Print from "expo-print";
 import { useNavigation, useRouter } from "expo-router";
+import * as Sharing from "expo-sharing";
 import { ArrowUpRight, Printer } from "lucide-react-native";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Alert, Pressable, ScrollView, Share, View } from "react-native";
+import QRCode from "react-native-qrcode-svg";
 
 import { Text } from "@/components/typography/Text";
 import { TextMono } from "@/components/typography/TextMono";
 import { useCart } from "@/context/CartContext";
-import { FontAwesome5, FontAwesome6 } from "@expo/vector-icons";
-
-import * as Print from "expo-print";
-import * as Sharing from "expo-sharing";
 
 export default function ReceiptPreviewScreen() {
   const { cart, customerName, paymentMethod, clearCart } = useCart();
@@ -23,9 +23,12 @@ export default function ReceiptPreviewScreen() {
 
   const now = new Date();
   const date = "07/06/2026"; // Hardcoded values from your custom layout mockup
-  const time = "09:58 AM";
+  const time = "09:58";
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.qty, 0);
+
+  const [qrBase64, setQrBase64] = useState<string | null>(null);
+  let qrRef = useRef<any>(null);
 
   useEffect(() => {
     navigation.setOptions({
@@ -38,6 +41,15 @@ export default function ReceiptPreviewScreen() {
       ),
     });
   }, []);
+
+  const handleQRRef = (c: any) => {
+    if (c && !qrBase64) {
+      qrRef.current = c;
+      qrRef.current.toDataURL((data: string) => {
+        setQrBase64(data);
+      });
+    }
+  };
 
   // Helper macro helper to inject layout dynamic item arrays directly into standard HTML structures safely
   const generateHTMLTemplate = () => {
@@ -66,6 +78,10 @@ export default function ReceiptPreviewScreen() {
     `,
       )
       .join("");
+
+    const qrImageSrc = qrBase64
+      ? `data:image/png;base64,${qrBase64}`
+      : `https://qrserver.com{receiptNumber}`;
 
     return `
       <!DOCTYPE html>
@@ -256,11 +272,11 @@ export default function ReceiptPreviewScreen() {
             <div class="qr-section">
               <span class="qr-label">Scan to verify this receipt</span>
               <img 
-                src="https://chart.googleapis.com/chart?chs=120x120&cht=qr&chl=https://ajmalnoor.com/verify/${receiptNumber}" 
+                src="${qrImageSrc}" 
                 width="80" 
                 height="80"
               />
-              <span class="qr-url">ajmalnoor.com/verify/${receiptNumber}</span>
+              <span class="qr-url">ajmalnoor.com/verify-receipt/${receiptNumber}</span>
             </div>
 
             <div class="footer-banner">
@@ -296,7 +312,7 @@ export default function ReceiptPreviewScreen() {
             `_x${i.qty}_ *${i.name}* - ₦${(i.price * i.qty).toLocaleString()}`,
         )
         .join("\n");
-      const textMessage = `*AJMAL NOOR RECEIPT*\n---------------------------\n*Date:* ${date}\n*Receipt #:* ${receiptNumber}\n*Customer:* ${customerName || "John Adebayo"}\n\n*Items Ordered:*\n${inlineItems}\n\n---------------------------\n*TOTAL: ₦${subtotal.toLocaleString()}*\n\nVerify order path at: ://ajmalnoor.com{receiptNumber}`;
+      const textMessage = `*AJMAL NOOR RECEIPT*\n---------------------------\n*Date:* ${date}\n*Receipt #:* ${receiptNumber}\n*Customer:* ${customerName || "John Adebayo"}\n\n*Items Ordered:*\n${inlineItems}\n\n---------------------------\n*TOTAL: ₦${subtotal.toLocaleString()}*\n\nVerify order path at: https://ajmalnoor.com/verify-receipt/${receiptNumber}`;
 
       await Share.share({
         message: textMessage,
@@ -338,6 +354,27 @@ export default function ReceiptPreviewScreen() {
       className="flex-1 bg-[#faf9f5]"
       contentContainerClassName="items-center p-[14px] pb-10 gap-3"
     >
+      {/* Hidden layout utility rendering the QR matrix engine safely completely off-screen */}
+      <View
+        style={{ position: "absolute", top: -1000, left: -1000, opacity: 0 }}
+      >
+        <QRCode
+          value={`https://ajmalnoor.com/verify-receipt/${receiptNumber}`}
+          size={100}
+          getRef={(c) => {
+            if (c && !qrBase64) {
+              qrRef.current = c;
+              // Minor timeout threshold prevents iOS and Android background canvas rendering race conditions
+              setTimeout(() => {
+                qrRef.current?.toDataURL((data: string) => {
+                  setQrBase64(data);
+                });
+              }, 150);
+            }
+          }}
+        />
+      </View>
+
       <View className="w-full bg-white rounded-2xl border-[0.25px] border-gray-700 py-5 overflow-hidden">
         <View className="items-center pb-4 border-b-[0.25px] border-gray-600 gap-[2px]">
           <TextMono className="text-[1.375rem]">AJMAL NOOR</TextMono>
@@ -456,7 +493,9 @@ export default function ReceiptPreviewScreen() {
 
         <View className="items-center py-5 gap-3 border-dashed border-[0.25px] border-gray-600">
           <TextMono className="text-sm">Scan to verify this receipt</TextMono>
-          <TextMono className="text-sm">ajmalnoor.com/verify/00149</TextMono>
+          <TextMono className="text-sm">
+            ajmalnoor.com/verify-receipt/00149
+          </TextMono>
         </View>
 
         <View className="px-[14px] pt-4 pb-3 gap-3 items-center">
@@ -464,7 +503,9 @@ export default function ReceiptPreviewScreen() {
           <View className="h-[0.25px] border-t-[0.25px] border-dashed border-gray-600" />
           <View className="items-center gap-2">
             <TextMono className="text-sm">Scan to verify this receipt</TextMono>
-            <TextMono className="text-sm">ajmalnoor.com/verify/00149</TextMono>
+            <TextMono className="text-sm">
+              ajmalnoor.com/verify-receipt/00149
+            </TextMono>
           </View>
         </View>
       </View>
