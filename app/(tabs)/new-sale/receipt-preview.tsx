@@ -122,7 +122,7 @@ export default function ReceiptPreviewScreen() {
             .company-meta {
               font-size: 13px;
               margin: 2px 0;
-              color #333;
+              color: #333;
             }
             .meta-section {
               font-size: 12px;
@@ -502,9 +502,11 @@ export default function ReceiptPreviewScreen() {
           <TextMono className="text-sm">Thank you for your purchase!</TextMono>
           <View className="h-[0.25px] border-t-[0.25px] border-dashed border-gray-600" />
           <View className="items-center gap-2">
-            <TextMono className="text-sm">Scan to verify this receipt</TextMono>
             <TextMono className="text-sm">
-              ajmalnoor.com/verify-receipt/00149
+              7-day return &nbsp;|&nbsp; 3-month warranty
+            </TextMono>
+            <TextMono className="text-sm">
+              Keep this receipt as proof of purchase
             </TextMono>
           </View>
         </View>
